@@ -1,11 +1,10 @@
 node_modules/
 .idea/
 .vs/
-cypress_simple_tests/.vs
-allure-report/
-allure-results/
-cypress/videos/
-cypress/screenshots/
-cypress/e2e/registration_form_2_solutions.cy.js
-cypress/e2e/registration_form_2_test.cy.js
+**/allure-report/
+**/allure-results/
+**/cypress/videos/
+**/cypress/screenshots
+**/cypress/e2e/registration_form_2_solutions.cy.js
+**/cypress/e2e/registration_form_2_test.cy.js
 test file.docx
