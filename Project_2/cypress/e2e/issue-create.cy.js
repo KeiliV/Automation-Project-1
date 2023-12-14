@@ -88,7 +88,7 @@ describe('Issue create', () => {
 
 //Test Case 1
 
-  it('Custom Issue Creation and validation', () => {
+  it.only('Custom Issue Creation and validation', () => {
       cy.get(issueModal.issueModal).within(() => {
 
       //Type Description
