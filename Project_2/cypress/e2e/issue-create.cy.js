@@ -88,7 +88,7 @@ describe('Issue create', () => {
 
 //Test Case 1
 
-  it.only('Custom Issue Creation and validation', () => {
+  it('Custom Issue Creation and validation', () => {
       cy.get(issueModal.issueModal).within(() => {
 
       //Type Description
@@ -141,7 +141,7 @@ describe('Issue create', () => {
 
   //Test Case 2
 
-  it.only('Random Data Plugin Issue Creation and validation', () => {
+  it('Random Data Plugin Issue Creation and validation', () => {
     
     const myWord = faker.lorem.word()
     const myWords = faker.lorem.words(3)
