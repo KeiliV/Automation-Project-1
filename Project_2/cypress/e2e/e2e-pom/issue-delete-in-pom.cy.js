@@ -17,20 +17,13 @@ describe("Issue delete", () => {
   it("Should delete issue successfully", () => {
     IssueModal.clickDeleteButton();
     IssueModal.confirmDeletion();
-
-    cy.reload();
-    cy.get(IssueModal.backlogList).should("not.contain", issueTitle);
+    IssueModal.ensureIssueIsNotVisibleOnBoard(issueTitle);
   });
 
   it("Should cancel deletion process successfully", () => {
-    //add steps to start deletion proces but cancel it
-
     IssueModal.clickDeleteButton();
     IssueModal.cancelDeletion();
     IssueModal.closeDetailModal();
-
-    //Assert that the issue is still on Jira board
-    cy.reload();
-    cy.get(IssueModal.backlogList).should("contain", issueTitle);
+    IssueModal.ensureIssueIsVisibleOnBoard(issueTitle);
   });
 });
