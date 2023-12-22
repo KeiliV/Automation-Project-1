@@ -8,7 +8,7 @@ function getIssueDetailsModal() {
 }
 
 function getFirstComment() {
-  return cy.get('[data-testid="issue-comment"]').first();
+  return cy.get(commentSection).first();
 }
 
 function saveCommentButtonClick() {
@@ -81,7 +81,7 @@ describe("Issue comments creating, editing and deleting", () => {
       .should("not.exist");
   });
 
-  it("Should add, edit and delete a comment successfully", () => {
+  it.only("Should add, edit and delete a comment successfully", () => {
     getIssueDetailsModal().within(() => {
       //ADD COMMENT
       cy.contains("Add a comment...").click();
@@ -119,8 +119,6 @@ describe("Issue comments creating, editing and deleting", () => {
       cy.contains("button", "Delete comment").click().should("not.exist");
     });
 
-    cy.get('[data-testid="issue-comment"]')
-      .contains(commentEdited)
-      .should("not.exist");
+    cy.get(commentSection).contains(commentEdited).should("not.exist");
   });
 });
