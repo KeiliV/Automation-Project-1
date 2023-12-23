@@ -2,6 +2,7 @@ const comment = "TEST_COMMENT";
 const commentEdited = "TEST_COMMENT_EDITED";
 const commentSection = '[data-testid="issue-comment"]';
 const confirmationPopup = '[data-testid="modal:confirm"]';
+const typeCommentTextarea = 'textarea[placeholder="Add a comment..."]';
 
 function getIssueDetailsModal() {
   return cy.get('[data-testid="modal:issue-details"]');
@@ -27,8 +28,6 @@ describe("Issue comments creating, editing and deleting", () => {
   });
 
   it("Should create a comment successfully", () => {
-    const comment = "TEST_COMMENT";
-
     getIssueDetailsModal().within(() => {
       cy.contains("Add a comment...").click();
 
@@ -86,7 +85,7 @@ describe("Issue comments creating, editing and deleting", () => {
       //ADD COMMENT
       cy.contains("Add a comment...").click();
 
-      cy.get('textarea[placeholder="Add a comment..."]').type(comment);
+      cy.get(typeCommentTextarea).type(comment);
 
       saveCommentButtonClick();
 
@@ -97,7 +96,7 @@ describe("Issue comments creating, editing and deleting", () => {
       //EDIT COMMENT
       getFirstComment().contains("Edit").click().should("not.exist");
 
-      cy.get('textarea[placeholder="Add a comment..."]')
+      cy.get(typeCommentTextarea)
         .should("contain", comment)
         .clear()
         .type(commentEdited);
