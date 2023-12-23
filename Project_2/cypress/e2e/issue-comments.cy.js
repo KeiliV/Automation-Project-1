@@ -80,7 +80,7 @@ describe("Issue comments creating, editing and deleting", () => {
       .should("not.exist");
   });
 
-  it.only("Should add, edit and delete a comment successfully", () => {
+  it("Should add, edit and delete a comment successfully", () => {
     getIssueDetailsModal().within(() => {
       //ADD COMMENT
       cy.contains("Add a comment...").click();
