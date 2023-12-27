@@ -1,49 +1,30 @@
-//CREATE NEW ISSUE
-it.skip("Should create an issue successfully", () => {
-  cy.visit("/");
-  cy.url()
-    .should("eq", `${Cypress.env("baseUrl")}project/board`)
-    .then((url) => {
-      cy.visit(url + "/board?modal-issue-create=true");
-    });
-  cy.get('[data-testid="modal:issue-create"]').within(() => {
-    cy.get('input[name="title"]')
-      .wait(1000)
-      .type("Time estimation test ticket");
-    cy.get('input[name="title"]').should(
-      "have.value",
-      "Time estimation test ticket"
-    );
-    cy.get('button[type="submit"]').click();
-  });
-
-  cy.get('[data-testid="modal:issue-create"]').should("not.exist");
-  cy.reload();
-
-  cy.get('[data-testid="board-list:backlog"]').contains(
-    "Time estimation test ticket"
-  );
-});
-
 describe("Time Tracking Functionality", () => {
-  beforeEach(() => {
+  it("Should add, edit and remove time estimation successfully", () => {
     cy.visit("/");
     cy.url()
-      .should("eq", `${Cypress.env("baseUrl")}project`)
+      .should("eq", `${Cypress.env("baseUrl")}project/board`)
       .then((url) => {
-        cy.visit(url + "/board");
-        cy.contains("This is an issue of type: Task.").click();
+        cy.visit(url + "/board?modal-issue-create=true");
       });
-  });
 
-  it("Should add, edit and remove time estimation successfully", () => {
-    //Remove estimated time for testing purposes
-    cy.get('input[placeholder="Number"]').eq(0).clear();
-    //Remove time already logged for testing purposes
-    cy.get('[data-testid="icon:stopwatch"]').next().click();
-    cy.get('[data-testid="modal:tracking"]').should("be.visible");
-    cy.get('input[placeholder="Number"]').eq(1).click().clear();
-    cy.contains("button", "Done").click();
+    //CREATE NEW TEST WITH NO TIME LOGGED FOR TESTING PURPOSE
+    cy.get('[data-testid="modal:issue-create"]').within(() => {
+      cy.get('input[name="title"]')
+        .wait(1000)
+        .type("Time estimation test ticket");
+      cy.get('input[name="title"]').should(
+        "have.value",
+        "Time estimation test ticket"
+      );
+      cy.get('button[type="submit"]').click();
+    });
+
+    cy.get('[data-testid="modal:issue-create"]').should("not.exist");
+    cy.wait(1000);
+
+    cy.contains("Time estimation test ticket").click();
+
+    //ADD ESTIMATED TIME
 
     //Check that time tracker has no spent time added (“No Time Logged” label is visible)
     cy.get('[data-testid="icon:stopwatch"]').next().contains("No time logged");
@@ -58,10 +39,61 @@ describe("Time Tracking Functionality", () => {
     //User closes issue detail page
     cy.get('[data-testid="icon:close"]').first().click();
     //User reopens the same issue to check that original estimation is saved
-    cy.contains("This is an issue of type: Task.").click();
+    cy.contains("Time estimation test ticket").click();
 
     //VALIDATION-2
     //After reopening issue detail view estimation value is still visible
     cy.get('input[placeholder="Number"]').eq(0).should("have.value", "10");
+
+    //EDIT ESTIMATED TIME
+    cy.get('input[placeholder="Number"]').eq(0).clear().type(20).blur();
+
+    //VALIDATION-1
+    //Updated value in hours is visible in the time tracking section
+    cy.get('[data-testid="icon:stopwatch"]').next().contains("20h estimated");
+    //User closes issue detail page
+    cy.get('[data-testid="icon:close"]').first().click();
+    //User reopens the same issue to check that original estimation is saved
+    cy.contains("Time estimation test ticket").click();
+
+    //VALIDATIONS
+    //After reopening issue detail view updated estimation value is still visible
+    cy.get('input[placeholder="Number"]').eq(0).should("have.value", "20");
+
+    //REMOVE ESTIMATED TIME
+    //User removes value from the field “Original estimate (hours)”
+    cy.get('input[placeholder="Number"]').eq(0).clear().blur().wait(1000);
+    //User closes issue detail page
+    cy.get('[data-testid="icon:close"]').first().click();
+    //User reopens the same issue to check that original estimation is saved
+    cy.contains("Time estimation test ticket").click();
+    //VALIDATIONS
+    //Value is removed from the time tracking section
+    cy.get('[data-testid="icon:stopwatch"]')
+      .next()
+      .contains("20h estimated")
+      .should("not.exist");
+    //Placeholder “Number” is visible in the original estimate field
+    cy.get('input[placeholder="Number"]').eq(0).should("be.visible");
   });
 });
+//});
+/*   beforeEach(() => {
+    cy.visit("/");
+    cy.url()
+      .should("eq", `${Cypress.env("baseUrl")}project`)
+      .then((url) => {
+        cy.visit(url + "/board");
+        cy.contains("This is an issue of type: Task.").click();
+      });
+  } */
+
+/*   it("Should remove estimated time on the ticket successfully", () => {
+    //Remove estimated time for testing purposes
+    cy.get('input[placeholder="Number"]').eq(0).clear();
+    //Remove time already logged for testing purposes
+    cy.get('[data-testid="icon:stopwatch"]').next().click();
+    cy.get('[data-testid="modal:tracking"]').should("be.visible");
+    cy.get('input[placeholder="Number"]').eq(1).click().clear();
+    cy.contains("button", "Done").click();
+  }); */
