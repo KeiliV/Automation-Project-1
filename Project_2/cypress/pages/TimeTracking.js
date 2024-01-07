@@ -5,7 +5,9 @@ class TimeTracking {
     this.title = 'input[name="title"]';
     this.closeDetailModalButton = '[data-testid="icon:close"]';
     this.createNewIssueButton = '[data-testid="icon:plus"]';
-    this.originalEstimateHoursField = 'input[placeholder="Number"]';
+    this.timeInputField = 'input[placeholder="Number"]';
+    this.stopwatchIcon = '[data-testid="icon:stopwatch"]';
+    this.timeTrackingPopUp = '[data-testid="modal:tracking"]';
   }
 
   getIssueModal() {
@@ -29,11 +31,7 @@ class TimeTracking {
   }
 
   enterValueInEstimateHoursField(inputHours) {
-    cy.get(this.originalEstimateHoursField)
-      .eq(0)
-      .clear()
-      .type(inputHours)
-      .blur();
+    cy.get(this.timeInputField).eq(0).clear().type(inputHours).blur();
   }
 
   ensureEstimatedHoursAreVisible(estimatedHours) {
@@ -41,13 +39,23 @@ class TimeTracking {
   }
 
   valueIsVisibleInEstimateHoursField(valueInField) {
-    cy.get(this.originalEstimateHoursField)
-      .eq(0)
-      .should("have.value", valueInField);
+    cy.get(this.timeInputField).eq(0).should("have.value", valueInField);
   }
 
-  closeDetailModal() {
+  closeIssueModal() {
     cy.get(this.closeDetailModalButton).first().click();
+  }
+
+  closeTimeTrackingPopUp() {
+    cy.get(this.timeTrackingPopUp).contains("Done").click();
+  }
+
+  validateTimeLabels(addedTime, removedTime) {
+    cy.get(this.stopwatchIcon)
+      .next()
+      .contains(addedTime)
+      .contains(removedTime)
+      .should("not.exist");
   }
 }
 
