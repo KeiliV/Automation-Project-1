@@ -73,7 +73,7 @@ describe("Issue details editing", () => {
 
   //BONUS ASSIGNMENT
 
-  it.only("Should loop through priority elements, save text values to an array, and assert array length", () => {
+  it("Should loop through priority elements, save text values to an array, and assert array length", () => {
     //BONUS TASK 1
     const expectedLength = 5;
     let prioritiesArray = [];
@@ -105,7 +105,7 @@ describe("Issue details editing", () => {
     });
   });
 
-  it.only("Should get reporter name and assert it contains only characters", () => {
+  it("Should get reporter name and assert it contains only characters", () => {
     //BONUS TASK 2
     getIssueDetailsModal().within(() => {
       let regex = /^[a-zA-Z\s]+$/;
