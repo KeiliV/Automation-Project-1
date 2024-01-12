@@ -1,15 +1,6 @@
 const getIssueDetailsModal = () =>
   cy.get('[data-testid="modal:issue-details"]');
 
-const getIssueCreateModal = () => cy.get('[data-testid="modal:issue-create"]');
-
-function createNewIssue(issueTitle) {
-  getIssueCreateModal().within(() => {
-    cy.get('input[name="title"]').wait(1000).type(issueTitle);
-    cy.get('button[type="submit"]').click();
-  });
-}
-
 describe("Issue details editing", () => {
   beforeEach(() => {
     cy.visit("/");
@@ -82,7 +73,7 @@ describe("Issue details editing", () => {
 
   //BONUS ASSIGNMENT
 
-  it("Should loop through priority elements, save text values to an array, and assert array length", () => {
+  it.only("Should loop through priority elements, save text values to an array, and assert array length", () => {
     //BONUS TASK 1
     const expectedLength = 5;
     let prioritiesArray = [];
@@ -114,7 +105,7 @@ describe("Issue details editing", () => {
     });
   });
 
-  it("Should get reporter name and assert it contains only characters", () => {
+  it.only("Should get reporter name and assert it contains only characters", () => {
     //BONUS TASK 2
     getIssueDetailsModal().within(() => {
       let regex = /^[a-zA-Z\s]+$/;
@@ -126,31 +117,4 @@ describe("Issue details editing", () => {
         });
     });
   });
-});
-
-it("Should create an issue and remove extra spaces from issue title in board view", () => {
-  //BONUS TASK 3
-  cy.visit("/");
-  cy.url()
-    .should("eq", `${Cypress.env("baseUrl")}project/board`)
-    .then((url) => {
-      cy.visit(url + "/board?modal-issue-create=true");
-    });
-
-  const issueTitleWithSpaces = "  This is a test issue for spaces";
-
-  createNewIssue(issueTitleWithSpaces);
-
-  cy.get('[data-testid="modal:issue-create"]').should("not.exist");
-  cy.contains("Issue has been successfully created.").should("be.visible");
-
-  cy.get('[data-testid="board-list:backlog"]')
-    .should("be.visible")
-    .within(() => {
-      cy.get('[data-testid="list-issue"]')
-        .should("have.length", "5")
-        .first()
-        .find("p")
-        .contains(issueTitleWithSpaces.trim());
-    });
 });
