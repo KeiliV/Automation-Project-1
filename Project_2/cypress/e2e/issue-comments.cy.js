@@ -80,6 +80,8 @@ describe("Issue comments creating, editing and deleting", () => {
       .should("not.exist");
   });
 
+  //ASSIGNMENT 1: MODIFY TESTS FOR COVERING COMMENTS FUNCTIONALITY: ADD/UPDATE/DELETE
+
   it("Should add, edit and delete a comment successfully", () => {
     getIssueDetailsModal().within(() => {
       //ADD COMMENT

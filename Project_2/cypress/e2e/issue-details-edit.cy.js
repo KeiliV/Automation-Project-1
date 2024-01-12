@@ -128,7 +128,7 @@ describe("Issue details editing", () => {
   });
 });
 
-it("Should create anissue and remove extra spaces from issue title in board view", () => {
+it("Should create an issue and remove extra spaces from issue title in board view", () => {
   //BONUS TASK 3
   cy.visit("/");
   cy.url()
